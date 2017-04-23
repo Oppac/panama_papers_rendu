@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<script type="text/javascript" src="canvasjs.min.js"></script>
+	<script type="text/javascript" src="singleAnalyse.js"></script>
+	<style>
+		#conteneur1{
+	overflow: scroll;
+	}
+		#conteneur2{
+	overflow: scroll;
+	}
+	</style>
+</head>
+
+<body>
+
+	<script type="text/javascript"> document.write("<h1 align=\"center\">Panama Papers - Analyse de "+"{{data}}"+" </h1>") </script>
+	<br/><br/>
+	<script type="text/javascript"> document.write("<h2 align=\"center\"> Relations entrantes à "+"{{data}}"+" </h2>") </script>
+	<br/>
+	<div id="chartContainer1" style="width: 45%; height: 600px; display: inline-block;"></div>
+	<div style="width: 8%; height: 600px; display: inline-block;"></div>
+	<div id="conteneur1"  style="width: 45%; height: 600px; display: inline-block;">
+		<table id="table1" border="1">
+			<thead>
+				<tr>
+					<th style="width: 25%;">Pays</th>
+					<th>Relation entrante</th>
+					<th>Relation sortante</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+	<br/><br/>
+	<script type="text/javascript"> document.write("<h2 align=\"center\"> Relations sortantes de "+"{{data}}"+" </h2>") </script>
+	<br/>
+	<div id="chartContainer3" style="width: 45%; height: 600px; display: inline-block;"></div>
+	<div style="width: 8%; height: 600px; display: inline-block;"></div>
+	<div id="conteneur2"  style="width: 45%; height: 600px; display: inline-block;">
+		<table id="table2" border="1">
+			<thead>
+				<tr>
+					<th style="width: 25%;">Pays</th>
+					<th>Relation sortante</th>
+					<th>Relation entrante</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+	<br/><br/>
+	<script type="text/javascript"> document.write("<h2 align=\"center\"> Part des relations internes à "+"{{data}}"+" par rapport au total de relations entrantes ou sortantes </h2>") </script>
+	<br/>
+	<div id="chartContainer4" style="width: 45%; height: 400px; display: inline-block;"></div>
+	<div id="chartContainer5" style="width: 45%; height: 400px; display: inline-block;"></div>
+	<br/><br/>
+
+</body>
+
+
+<script type="text/javascript">
+
+	var chart1 = new CanvasJS.Chart("chartContainer1",
+	{
+		title:{
+			text: ""
+		},
+    animationEnabled: true,
+		theme: "theme2",
+		data: [
+		{
+			type: "doughnut",
+			indexLabelFontFamily: "Garamond",
+			indexLabelFontSize: 12,
+			startAngle:0,
+			indexLabelFontColor: "dimgrey",
+			indexLabelLineColor: "darkgrey",
+			toolTipContent: "{indexLabel}: {y}",
+
+			dataPoints: analyse_cerlce_1
+		}
+		]
+	});
+
+var tableau = document.getElementById("table1");
+for(var i=0; i< analyse_bar_1_1.length; i++){
+	var ligne = tableau.insertRow(-1);
+	var colonne1 = ligne.insertCell(0);
+	colonne1.innerHTML += analyse_bar_1_1[i]["label"]
+	var colonne2 = ligne.insertCell(1);
+	colonne2.innerHTML += analyse_bar_1_1[i]["y"]
+	var colonne3 = ligne.insertCell(2);
+	colonne3.innerHTML += analyse_bar_1_2[i]["y"]
+}
+var arrayLignes = tableau.rows;
+for(var i=0; i<arrayLignes.length; i++){
+	if(i%2 == 0){
+		arrayLignes[i].style.backgroundColor = "#bdcbf5";
+	}
+	else{
+		 arrayLignes[i].style.backgroundColor = "#829eeb";
+	}
+}
+
+
+
+	var chart3 = new CanvasJS.Chart("chartContainer3",
+	{
+		title:{
+			text: ""
+		},
+    animationEnabled: true,
+		theme: "theme2",
+		data: [
+		{
+			type: "doughnut",
+			indexLabelFontFamily: "Garamond",
+			indexLabelFontSize: 12,
+			startAngle:0,
+			indexLabelFontColor: "dimgrey",
+			indexLabelLineColor: "darkgrey",
+			toolTipContent: "{indexLabel}: {y}",
+
+			dataPoints: analyse_cerlce_2
+		}
+		]
+	});
+
+	var tableau = document.getElementById("table2");
+	for(var i=0; i< analyse_bar_2_1.length; i++){
+		var ligne = tableau.insertRow(-1);
+		var colonne1 = ligne.insertCell(0);
+		colonne1.innerHTML += analyse_bar_2_1[i]["label"]
+		var colonne2 = ligne.insertCell(1);
+		colonne2.innerHTML += analyse_bar_2_1[i]["y"]
+		var colonne3 = ligne.insertCell(2);
+		colonne3.innerHTML += analyse_bar_2_2[i]["y"]
+	}
+	var arrayLignes = tableau.rows;
+	for(var i=0; i<arrayLignes.length; i++){
+		if(i%2 == 0){
+			arrayLignes[i].style.backgroundColor = "#bdcbf5";
+		}
+		else{
+			 arrayLignes[i].style.backgroundColor = "#829eeb";
+		}
+	}
+
+	var chart4 = new CanvasJS.Chart("chartContainer4",
+	{
+		title:{
+			text: ""
+		},
+    animationEnabled: true,
+		theme: "theme2",
+		data: [
+		{
+			type: "doughnut",
+			indexLabelFontFamily: "Garamond",
+			indexLabelFontSize: 12,
+			startAngle:0,
+			indexLabelFontColor: "dimgrey",
+			indexLabelLineColor: "darkgrey",
+			toolTipContent: "{indexLabel}: {y}",
+
+			dataPoints: analyse_cerlce_3
+		}
+		]
+	});
+
+	var chart5 = new CanvasJS.Chart("chartContainer5",
+	{
+		title:{
+			text: ""
+		},
+    animationEnabled: true,
+		theme: "theme2",
+		data: [
+		{
+			type: "doughnut",
+			indexLabelFontFamily: "Garamond",
+			indexLabelFontSize: 12,
+			startAngle:0,
+			indexLabelFontColor: "dimgrey",
+			indexLabelLineColor: "darkgrey",
+			toolTipContent: "{indexLabel}: {y}",
+
+			dataPoints: analyse_cerlce_4
+		}
+		]
+	});
+
+
+chart1.render();
+chart3.render();
+chart4.render();
+chart5.render();
+
+</script>
+
+
+</html>

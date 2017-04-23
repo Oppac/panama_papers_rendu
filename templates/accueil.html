@@ -1,0 +1,374 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<script type="text/javascript" src="canvasjs.min.js"></script>
+	<script type="text/javascript" src="accueil.js"></script>
+</head>
+
+<body>
+
+	<h1 align="center">Panama Papers - Project</h1>
+
+	<h2>Panama Papers - Introduction</h2>
+	<div style="width: 100%; font-size:16px;">
+		Onze millions de documents financiers et légaux, plus de deux cent mille compagnies offshore dans deux cents pays et territoires, des hommes politiques parmi les plus puissants de la planète, la fuite des Panama Papers fut un phénomène global.
+		Les informations récupérées par le ICIJ (International Consortium of Investigative Journalists) and SZ (Suddeutsche Zeitung) ont permis de mettre à jour une large opération d’optimisation et fraude fiscale menée par Mossack Fonseca, un des leaders du marché de la création de compagnies offshore.
+		<br/><br/>
+		L’évasion fiscale (illégale) et l’optimisation fiscale (légale mais, peu éthique) fait perdre chaque année de vaste somme de revenues aux états-nations, fragilise les institutions et creuse l’inégalité des richesses entre les super-riches et le reste de la population. Ces crimes sont difficiles à persécuter et condamner (voire impossible dans les pays corrompus) car ils impliquent le plus souvent des personnes fortunées et de pouvoir, sont compliqués à détecter et sont présentés comme des crimes sans victimes et bénin (en opposition aux vols classiques et agressions).
+		“John Doe”, le sonneur d’alerte à l’origine de la fuite, cite l’ampleur des inégalités que provoquent ces pratiques comme la principale raison de son geste.
+		<br/><br/>
+		Mossack Fonseca est un cabinet d’avocats panaméen spécialisé dans la création de compagnies écran offshore, c’est-à-dire des entreprises dépourvues d’actifs et situées à l’étranger souvent dans un endroit où les régimes de taxes sont avantageux (les paradis fiscaux). Les compagnies écran sont tout à fait légales et servent des fins économiques légitimes. Toutefois, de par leurs natures, elles ont rapidement été utilisées comme “marchés noirs” du système bancaire international étant le parfait agent pour faire des opérations financières discrètement.
+		<br/><br/>
+		Pour une somme mensuelle, Mossack Fonseca propose à leurs clients la création de ce type d’entreprises afin qu’il puisse bénéficier d’une sorte de compte en banque secret et non taxable. Cet argent est ensuite utilisé pour des tâches les banales (protéger de l’argent d’un divorce, acheter un bateau avec l’argent de sa compagnie) aux plus extrêmes (financer des cartels de drogues ou des opérations terroristes) en passant par les pot de vin aux gouvernements corrompus, investir dans des entreprises sous sanctions ou la simple évasion fiscale.
+		La gestion des données fuitées fut un excellent exemple de coopération journalistique qui a regroupé cent sept organisations mediatiques dispersées dans quatre-vingts pays. Les Panama Papers ont été une importante étape dans la lutte contre les fraudes fiscales et contribuent à réduire le sentiment d’impunité des personnes usant de ce genre de pratiques.
+		<br/><br/>
+		Parmi les Français, on retrouve l’ancien ministre du budget Jérôme Cahuzac et de potentiels liens avec la famille Le Pen. Panamá a été suite à l’affaire remis sur la liste des paradis fiscaux reconnus par la France.
+	</div>
+	<br/><br/>
+
+	<h2>Panama Papers - Analyse Graphique</h2>
+	<br/><br/>
+	<h3 align="center" style="font-size: 26px;"> Top 10:  des pays avec le plus d'entités </h3>
+	<br/>
+	<div id="chartContainer1" style="width: 45%;height: 300px;display: inline-block;"></div>
+	<div id="chartContainer2" style="width: 45%;height: 300px;display: inline-block;"></div>
+	<br/><br/>
+	<h3 align="center" style="font-size: 26px;"> Top 10:  des pays avec le plus de relations entrantes </h3>
+	<br/>
+	<div id="chartContainer3" style="width: 45%;height: 300px;display: inline-block;"></div>
+	<div id="chartContainer4" style="width: 45%;height: 300px;display: inline-block;"></div>
+	<br/><br/>
+	<h3 align="center" style="font-size: 26px;"> Top 10:  des pays avec le plus de relations sortantes </h3>
+	<br/>
+	<div id="chartContainer5" style="width: 45%;height: 300px;display: inline-block;"></div>
+	<div id="chartContainer6" style="width: 45%;height: 300px;display: inline-block;"></div>
+	<br/><br/>
+	<div style="width:50%; font-size:14px;">
+		* Les relations ici représentées sont l'image de celle que l'on peux trouver dans la base de données de telle sorte que toute liaison (n)-[r]->(m) sera une relation entrante dans le pays de m depuis celui de n et sortante dans le pays de n vers celui de m.
+		Les relations dont le titre commence par "same" ou "similare" sont ignorées.
+	<br/><br/>
+	</div>
+
+	<h2>Panama Papers - Aux cas par cas</h2>
+	<br/><br/>
+
+	<div id="myDiv" style="margin-left: 250px;"></div>
+
+</body>
+
+
+<script type="text/javascript">
+
+	var chart1 = new CanvasJS.Chart("chartContainer1",
+	{
+		title:{
+			text: ""
+		},
+                      animationEnabled: true,
+		theme: "theme2",
+		data: [
+		{
+			type: "doughnut",
+			indexLabelFontFamily: "Garamond",
+			indexLabelFontSize: 20,
+			startAngle:0,
+			indexLabelFontColor: "dimgrey",
+			indexLabelLineColor: "darkgrey",
+			toolTipContent: "{y}",
+
+			dataPoints: donut_entities
+		}
+		]
+	});
+
+	var chart2 = new CanvasJS.Chart("chartContainer2",
+	{
+		title:{
+			text: "",
+			fontWeight: "normal"
+		},
+		animationEnabled: true,
+		legend: {
+			cursor:"pointer",
+			itemclick : function(e) {
+				if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+						e.dataSeries.visible = false;
+				}
+				else {
+						e.dataSeries.visible = true;
+				}
+				chart2.render();
+			}
+		},
+		axisY: {
+			title: ""
+		},
+		toolTip: {
+			shared: true,
+			content: function(e){
+				var str = '';
+				var total = 0 ;
+				var str3;
+				var str2 ;
+				for (var i = 0; i < e.entries.length; i++){
+					var  str1 = "<span style= 'color:"+e.entries[i].dataSeries.color + "'> " + e.entries[i].dataSeries.name + "</span>: <strong>"+  e.entries[i].dataPoint.y + "</strong> <br/>" ;
+					total = e.entries[i].dataPoint.y + total;
+					str = str.concat(str1);
+				}
+				str2 = "<span style = 'color:DodgerBlue; '><strong>"+e.entries[0].dataPoint.label + "</strong></span><br/>";
+				str3 = "<span style = 'color:Tomato '>Total: </span><strong>" + total + "</strong><br/>";
+
+				return (str2.concat(str)).concat(str3);
+			}
+
+		},
+		data: [
+		{
+			type: "bar",
+			showInLegend: true,
+			name: "Entities",
+			color: "#A57164",
+			dataPoints: list_entities_1
+		},
+		{
+			type: "bar",
+			showInLegend: true,
+			name: "Interaction in",
+			color: "silver",
+			dataPoints: list_entities_2
+		},
+		{
+			type: "bar",
+			showInLegend: true,
+			name: "Interaction off",
+			color: "gold",
+			dataPoints: list_entities_3
+		}
+
+		]
+	});
+
+	var chart3 = new CanvasJS.Chart("chartContainer3",
+	{
+		title:{
+			text: ""
+		},
+											animationEnabled: true,
+		theme: "theme2",
+		data: [
+		{
+			type: "doughnut",
+			indexLabelFontFamily: "Garamond",
+			indexLabelFontSize: 20,
+			startAngle:0,
+			indexLabelFontColor: "dimgrey",
+			indexLabelLineColor: "darkgrey",
+			toolTipContent: "{y}",
+
+			dataPoints: donut_interIn
+		}
+		]
+	});
+
+	var chart4 = new CanvasJS.Chart("chartContainer4",
+	{
+		title:{
+			text: "",
+			fontWeight: "normal"
+		},
+		animationEnabled: true,
+		legend: {
+			cursor:"pointer",
+			itemclick : function(e) {
+				if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+						e.dataSeries.visible = false;
+				}
+				else {
+						e.dataSeries.visible = true;
+				}
+				chart4.render();
+			}
+		},
+		axisY: {
+			title: ""
+		},
+		toolTip: {
+			shared: true,
+			content: function(e){
+				var str = '';
+				var total = 0 ;
+				var str3;
+				var str2 ;
+				for (var i = 0; i < e.entries.length; i++){
+					var  str1 = "<span style= 'color:"+e.entries[i].dataSeries.color + "'> " + e.entries[i].dataSeries.name + "</span>: <strong>"+  e.entries[i].dataPoint.y + "</strong> <br/>" ;
+					total = e.entries[i].dataPoint.y + total;
+					str = str.concat(str1);
+				}
+				str2 = "<span style = 'color:DodgerBlue; '><strong>"+e.entries[0].dataPoint.label + "</strong></span><br/>";
+				str3 = "<span style = 'color:Tomato '>Total: </span><strong>" + total + "</strong><br/>";
+
+				return (str2.concat(str)).concat(str3);
+			}
+
+		},
+		data: [
+		{
+			type: "bar",
+			showInLegend: true,
+			name: "Entities",
+			color: "#A57164",
+			dataPoints: list_interIn_1
+		},
+		{
+			type: "bar",
+			showInLegend: true,
+			name: "Interaction in",
+			color: "silver",
+			dataPoints: list_interIn_2
+		},
+		{
+			type: "bar",
+			showInLegend: true,
+			name: "Interaction off",
+			color: "gold",
+			dataPoints: list_interIn_3
+		}
+
+		]
+	});
+
+	var chart5 = new CanvasJS.Chart("chartContainer5",
+	{
+		title:{
+			text: ""
+		},
+											animationEnabled: true,
+		theme: "theme2",
+		data: [
+		{
+			type: "doughnut",
+			indexLabelFontFamily: "Garamond",
+			indexLabelFontSize: 20,
+			startAngle:0,
+			indexLabelFontColor: "dimgrey",
+			indexLabelLineColor: "darkgrey",
+			toolTipContent: "{y}",
+
+			dataPoints: donut_interOff
+		}
+		]
+	});
+
+	var chart6 = new CanvasJS.Chart("chartContainer6",
+	{
+		title:{
+			text: "",
+			fontWeight: "normal"
+		},
+		animationEnabled: true,
+		legend: {
+			cursor:"pointer",
+			itemclick : function(e) {
+				if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+						e.dataSeries.visible = false;
+				}
+				else {
+						e.dataSeries.visible = true;
+				}
+				chart6.render();
+			}
+		},
+		axisY: {
+			title: ""
+		},
+		toolTip: {
+			shared: true,
+			content: function(e){
+				var str = '';
+				var total = 0 ;
+				var str3;
+				var str2 ;
+				for (var i = 0; i < e.entries.length; i++){
+					var  str1 = "<span style= 'color:"+e.entries[i].dataSeries.color + "'> " + e.entries[i].dataSeries.name + "</span>: <strong>"+  e.entries[i].dataPoint.y + "</strong> <br/>" ;
+					total = e.entries[i].dataPoint.y + total;
+					str = str.concat(str1);
+				}
+				str2 = "<span style = 'color:DodgerBlue; '><strong>"+e.entries[0].dataPoint.label + "</strong></span><br/>";
+				str3 = "<span style = 'color:Tomato '>Total: </span><strong>" + total + "</strong><br/>";
+
+				return (str2.concat(str)).concat(str3);
+			}
+
+		},
+		data: [
+		{
+			type: "bar",
+			showInLegend: true,
+			name: "Entities",
+			color: "#A57164",
+			dataPoints: list_interOff_1
+		},
+		{
+			type: "bar",
+			showInLegend: true,
+			name: "Interaction in",
+			color: "silver",
+			dataPoints: list_interOff_2
+		},
+		{
+			type: "bar",
+			showInLegend: true,
+			name: "Interaction off",
+			color: "gold",
+			dataPoints: list_interOff_3
+		}
+
+		]
+	});
+
+chart1.render();
+chart2.render();
+chart3.render();
+chart4.render();
+chart5.render();
+chart6.render();
+
+var myDiv = document.getElementById("myDiv");
+
+          var form = document.createElement("form");
+          form.id = "countryForm";
+          form.method = "GET";
+          form.action = "/countries";
+
+          //Create and append select list
+          var selectListOne = document.createElement("select");
+          selectListOne.id = "mySelect";
+          selectListOne.name = "country";
+
+          //Create and append the options
+          for (var key in country_select) {
+              var optionOne = document.createElement("option");
+              optionOne.value = key;
+              optionOne.text = country_select[key];
+              selectListOne.appendChild(optionOne);
+          }
+
+          var input = document.createElement("input");
+          input.type = "submit";
+          input.value = "Rechercher";
+
+          var text = document.createTextNode("Pays: ");
+          form.appendChild(text);
+          form.appendChild(selectListOne);
+          text = document.createTextNode(" ");
+          form.appendChild(text);
+          form.appendChild(input);
+
+
+          myDiv.appendChild(form)
+
+</script>
+
+
+</html>
